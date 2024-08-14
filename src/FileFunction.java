@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.io.*;
 
 public class FileFunction {
-    private GreenHatEditor greenHatEditor;
+    final private GreenHatEditor greenHatEditor;
 
     public FileFunction(GreenHatEditor greenHatEditor) {
         this.greenHatEditor = greenHatEditor;

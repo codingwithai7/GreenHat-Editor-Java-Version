@@ -5,7 +5,7 @@ import javax.swing.undo.*;
 public class GreenHatEditor extends JFrame implements ActionListener {
     public JTextArea textArea;
     public JFileChooser fileChooser;
-    private UndoManager undoManager = new UndoManager();
+    final private UndoManager undoManager = new UndoManager();
     FileFunction fileFunction = new FileFunction(this);
     EditFunction editFunction = new EditFunction(this, undoManager);
 

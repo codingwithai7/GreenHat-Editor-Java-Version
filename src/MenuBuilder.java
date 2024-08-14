@@ -1,7 +1,7 @@
 import javax.swing.*;
 
 public class MenuBuilder {
-    private GreenHatEditor greenHatEditor;
+    final private GreenHatEditor greenHatEditor;
 
     public JMenuItem newMenuItem;
     public JMenuItem openMenuItem;

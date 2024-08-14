@@ -1,14 +1,11 @@
 // src/EditFunction.java
-import javax.swing.*;
 import javax.swing.undo.UndoManager;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class EditFunction {
-    private GreenHatEditor greenHatEditor;
-    private UndoManager undoManager;
+    final private GreenHatEditor greenHatEditor;
+    final private UndoManager undoManager;
 
     public EditFunction(GreenHatEditor greenHatEditor, UndoManager undoManager) {
         this.greenHatEditor = greenHatEditor;
