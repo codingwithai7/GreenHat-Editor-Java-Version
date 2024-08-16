@@ -1,3 +1,4 @@
+// src/GreenHatEditor.java
 import javax.swing.*;
 import java.awt.event.*;
 import javax.swing.undo.*;
@@ -9,24 +10,42 @@ public class GreenHatEditor extends JFrame implements ActionListener {
     FileFunction fileFunction = new FileFunction(this);
     EditFunction editFunction = new EditFunction(this, undoManager);
     ReplaceDialog replaceDialog;
+    FindDialog findDialog;
+    public JFrame window;
+    private boolean hasSearched = false;
+    public String lastSearchText = "";
 
     public GreenHatEditor() {
-        setTitle("GreenHat Editor");
-        setSize(600, 400);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        window = new JFrame("GreenHat Editor");
+        window.setSize(600, 400);
+        window.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         textArea = new JTextArea();
-        add(new JScrollPane(textArea));
+        window.add(new JScrollPane(textArea));
 
         fileChooser = new JFileChooser();
 
         MenuBuilder menuBuilder = new MenuBuilder(this);
-        setJMenuBar(menuBuilder.createMenuBar());
+        window.setJMenuBar(menuBuilder.createMenuBar());
 
         textArea.getDocument().addUndoableEditListener(undoManager);
 
         replaceDialog = new ReplaceDialog(this.textArea);
+        findDialog = new FindDialog(window, this);
 
+    }
+
+    public void find() {
+        findDialog.setVisible(true);
+        hasSearched = true;
+    }
+
+    public void findNext() {
+        if (hasSearched) {
+            findDialog.findNext();
+        } else {
+            find();
+        }
     }
 
     public void replace() {
@@ -69,10 +88,12 @@ public class GreenHatEditor extends JFrame implements ActionListener {
                 textArea.replaceSelection("");
                 break;
             case "Find...":
-                // Implement find functionality
+                find();
+                break;
+            case "Find Next":
+                findNext();
                 break;
             case "Replace...":
-                // Implement replace functionality
                 replace();
                 break;
             case "Select All":
@@ -80,7 +101,7 @@ public class GreenHatEditor extends JFrame implements ActionListener {
                 break;
 
             case "About GreenHat":
-                JOptionPane.showMessageDialog(this, "About GreenHat Editor");
+                JOptionPane.showMessageDialog(window, "About GreenHat Editor");
                 break;
             // Add more cases for other menu items
         }
@@ -89,7 +110,7 @@ public class GreenHatEditor extends JFrame implements ActionListener {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             GreenHatEditor editor = new GreenHatEditor();
-            editor.setVisible(true);
+            editor.window.setVisible(true);
         });
     }
 }
