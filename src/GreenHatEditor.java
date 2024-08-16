@@ -52,6 +52,20 @@ public class GreenHatEditor extends JFrame implements ActionListener {
         replaceDialog.setVisible(true);
     }
 
+    public void gotoLine() {
+        String lineStr = JOptionPane.showInputDialog(this, "Enter line number:", "Go To Line", JOptionPane.PLAIN_MESSAGE);
+        if (lineStr != null) {
+            try {
+                int lineNumber = Integer.parseInt(lineStr);
+                int startOffset = textArea.getLineStartOffset(lineNumber - 1);
+                textArea.setCaretPosition(startOffset);
+                textArea.requestFocusInWindow();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Invalid line number.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
@@ -99,7 +113,12 @@ public class GreenHatEditor extends JFrame implements ActionListener {
             case "Select All":
                 textArea.selectAll();
                 break;
-
+            case "Go To...":
+                gotoLine();
+                break;
+            case "Time/Date":
+                editFunction.timeDate();
+                break;
             case "About GreenHat":
                 JOptionPane.showMessageDialog(window, "About GreenHat Editor");
                 break;
