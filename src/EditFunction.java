@@ -1,4 +1,5 @@
 // src/EditFunction.java
+import javax.swing.*;
 import javax.swing.undo.UndoManager;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,14 +17,6 @@ public class EditFunction {
         if (undoManager.canUndo()) {
             undoManager.undo();
         }
-    }
-
-    public void find() {
-        // Implement find functionality
-    }
-
-    public void replace() {
-        // Implement replace functionality
     }
 
     public void timeDate() {

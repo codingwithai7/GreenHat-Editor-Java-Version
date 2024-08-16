@@ -8,6 +8,7 @@ public class GreenHatEditor extends JFrame implements ActionListener {
     final private UndoManager undoManager = new UndoManager();
     FileFunction fileFunction = new FileFunction(this);
     EditFunction editFunction = new EditFunction(this, undoManager);
+    ReplaceDialog replaceDialog;
 
     public GreenHatEditor() {
         setTitle("GreenHat Editor");
@@ -24,6 +25,12 @@ public class GreenHatEditor extends JFrame implements ActionListener {
 
         textArea.getDocument().addUndoableEditListener(undoManager);
 
+        replaceDialog = new ReplaceDialog(this.textArea);
+
+    }
+
+    public void replace() {
+        replaceDialog.setVisible(true);
     }
 
     @Override
@@ -66,6 +73,7 @@ public class GreenHatEditor extends JFrame implements ActionListener {
                 break;
             case "Replace...":
                 // Implement replace functionality
+                replace();
                 break;
             case "Select All":
                 textArea.selectAll();
