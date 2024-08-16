@@ -11,6 +11,7 @@ public class GreenHatEditor extends JFrame implements ActionListener {
     EditFunction editFunction = new EditFunction(this, undoManager);
     ReplaceDialog replaceDialog;
     FindDialog findDialog;
+    FontDialog fontDialog;
     public JFrame window;
     private boolean hasSearched = false;
     public String lastSearchText = "";
@@ -32,7 +33,7 @@ public class GreenHatEditor extends JFrame implements ActionListener {
 
         replaceDialog = new ReplaceDialog(this.textArea);
         findDialog = new FindDialog(window, this);
-
+        fontDialog = new FontDialog(window, this);
     }
 
     public void find() {
@@ -52,17 +53,17 @@ public class GreenHatEditor extends JFrame implements ActionListener {
         replaceDialog.setVisible(true);
     }
 
+    public void showFontDialog() {
+        fontDialog.setVisible(true);
+    }
+
     public void gotoLine() {
-        String lineStr = JOptionPane.showInputDialog(this, "Enter line number:", "Go To Line", JOptionPane.PLAIN_MESSAGE);
-        if (lineStr != null) {
-            try {
-                int lineNumber = Integer.parseInt(lineStr);
-                int startOffset = textArea.getLineStartOffset(lineNumber - 1);
-                textArea.setCaretPosition(startOffset);
-                textArea.requestFocusInWindow();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Invalid line number.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+        String line = JOptionPane.showInputDialog(window, "Enter line number:");
+        try {
+            int pos = textArea.getLineStartOffset(Integer.parseInt(line) - 1);
+            textArea.setCaretPosition(pos);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(window, "Invalid line number");
         }
     }
 
@@ -115,6 +116,9 @@ public class GreenHatEditor extends JFrame implements ActionListener {
                 break;
             case "Go To...":
                 gotoLine();
+                break;
+            case "Font...":
+                showFontDialog();
                 break;
             case "Time/Date":
                 editFunction.timeDate();
