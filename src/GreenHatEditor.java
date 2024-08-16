@@ -12,9 +12,12 @@ public class GreenHatEditor extends JFrame implements ActionListener {
     ReplaceDialog replaceDialog;
     FindDialog findDialog;
     FontDialog fontDialog;
+    MenuBuilder menuBuilder;
     public JFrame window;
     private boolean hasSearched = false;
     public String lastSearchText = "";
+    private boolean wordWrapEnabled = false;
+
 
     public GreenHatEditor() {
         window = new JFrame("GreenHat Editor");
@@ -26,7 +29,7 @@ public class GreenHatEditor extends JFrame implements ActionListener {
 
         fileChooser = new JFileChooser();
 
-        MenuBuilder menuBuilder = new MenuBuilder(this);
+        menuBuilder = new MenuBuilder(this);
         window.setJMenuBar(menuBuilder.createMenuBar());
 
         textArea.getDocument().addUndoableEditListener(undoManager);
@@ -65,6 +68,14 @@ public class GreenHatEditor extends JFrame implements ActionListener {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(window, "Invalid line number");
         }
+    }
+
+    public void toggleWordWrap() {
+        wordWrapEnabled = !wordWrapEnabled;
+        textArea.setLineWrap(wordWrapEnabled);
+        textArea.setWrapStyleWord(wordWrapEnabled);
+        JMenuItem wordWrapMenuItem = this.menuBuilder.wordWrapMenuItem;
+        wordWrapMenuItem.setSelected(wordWrapEnabled);
     }
 
     @Override
@@ -116,6 +127,9 @@ public class GreenHatEditor extends JFrame implements ActionListener {
                 break;
             case "Go To...":
                 gotoLine();
+                break;
+            case "Word Wrap":
+                toggleWordWrap();
                 break;
             case "Font...":
                 showFontDialog();

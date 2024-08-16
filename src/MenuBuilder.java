@@ -67,7 +67,7 @@ public class MenuBuilder {
 
         // Format Menu
         JMenu formatMenu = new JMenu("Format");
-        wordWrapMenuItem = addItem(formatMenu, "Word Wrap");
+        wordWrapMenuItem = addCheckBoxMenuItem(formatMenu, "Word Wrap");
         fontMenuItem = addItem(formatMenu, "Font...");
         menuBar.add(formatMenu);
 
@@ -83,6 +83,14 @@ public class MenuBuilder {
         menuBar.add(helpMenu);
 
         return menuBar;
+    }
+
+    private JMenuItem addCheckBoxMenuItem(JMenu menu, String name) {
+        JMenuItem menuItem = new JCheckBoxMenuItem(name);
+        menuItem.addActionListener(greenHatEditor);
+        menuItem.setActionCommand(name);
+        menu.add(menuItem);
+        return menuItem;
     }
 
     private JMenuItem addItem(JMenu menu, String name) {
