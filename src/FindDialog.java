@@ -1,18 +1,19 @@
 // src/FindDialog.java
 import javax.swing.*;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class FindDialog extends JDialog {
 
-    private GreenHatEditor greenHatEditor;
-    private JTextField findTextField;
-    private JCheckBox matchCaseCheckBox;
-    private JRadioButton upRadioButton;
-    private JRadioButton downRadioButton;
-    private JButton findNextButton;
-    private JButton cancelButton;
+    final private GreenHatEditor greenHatEditor;
+    final private JTextField findTextField;
+    final private JCheckBox matchCaseCheckBox;
+    final private JRadioButton upRadioButton;
+    final private JRadioButton downRadioButton;
+    final private JButton findNextButton;
+    final private JButton cancelButton;
 
     public FindDialog(JFrame parent, GreenHatEditor greenHatEditor) {
         super(parent, "Find", true);
@@ -114,6 +115,14 @@ public class FindDialog extends JDialog {
             }
 
             if (index != -1) {
+                try {
+                    Highlighter highlighter = greenHatEditor.textArea.getHighlighter();
+                    Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+                    highlighter.removeAllHighlights();
+                    highlighter.addHighlight(index, index + searchText.length(), painter);
+                } catch (BadLocationException ex) {
+                    ex.printStackTrace();
+                }
                 greenHatEditor.textArea.select(index, index + searchText.length());
                 greenHatEditor.textArea.setCaretPosition(index + (searchUp ? 0 : searchText.length()));
                 greenHatEditor.textArea.requestFocusInWindow();
