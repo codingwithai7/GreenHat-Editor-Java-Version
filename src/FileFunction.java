@@ -1,3 +1,4 @@
+// src/FileFunction.java
 import javax.swing.*;
 import java.io.*;
 
@@ -8,10 +9,12 @@ public class FileFunction {
         this.greenHatEditor = greenHatEditor;
     }
 
-
     public void newFile() {
-        greenHatEditor.textArea.setText("");
-        greenHatEditor.setTitle("Untitled - GreenHat Editor");
+        if (greenHatEditor.textArea.getText().isEmpty() || greenHatEditor.confirmSave()) {
+            greenHatEditor.textArea.setText("");
+            greenHatEditor.setTitle("Untitled - GreenHat Editor");
+            greenHatEditor.isModified = false;
+        }
     }
 
     public void openFile() {
@@ -24,6 +27,7 @@ public class FileFunction {
                     greenHatEditor.textArea.append(line + "\n");
                 }
                 greenHatEditor.setTitle(file.getName() + " - GreenHat Editor");
+                greenHatEditor.isModified = false;
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -37,6 +41,7 @@ public class FileFunction {
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
                     writer.write(greenHatEditor.textArea.getText());
                     greenHatEditor.setTitle(file.getName() + " - GreenHat Editor");
+                    greenHatEditor.isModified = false;
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -45,6 +50,7 @@ public class FileFunction {
             // Save to the existing file
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(greenHatEditor.fileChooser.getSelectedFile()))) {
                 writer.write(greenHatEditor.textArea.getText());
+                greenHatEditor.isModified = false;
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

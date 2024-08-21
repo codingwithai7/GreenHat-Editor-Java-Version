@@ -1,5 +1,7 @@
 // src/GreenHatEditor.java
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.event.*;
 import javax.swing.undo.*;
 
@@ -17,7 +19,7 @@ public class GreenHatEditor extends JFrame implements ActionListener {
     private boolean hasSearched = false;
     public String lastSearchText = "";
     private boolean wordWrapEnabled = false;
-
+    public boolean isModified = false;
 
     public GreenHatEditor() {
         window = new JFrame("GreenHat Editor");
@@ -33,6 +35,22 @@ public class GreenHatEditor extends JFrame implements ActionListener {
         window.setJMenuBar(menuBuilder.createMenuBar());
 
         textArea.getDocument().addUndoableEditListener(undoManager);
+        textArea.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                isModified = true;
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                isModified = true;
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                isModified = true;
+            }
+        });
 
         replaceDialog = new ReplaceDialog(this.textArea);
         findDialog = new FindDialog(window, this);
@@ -76,6 +94,20 @@ public class GreenHatEditor extends JFrame implements ActionListener {
         textArea.setWrapStyleWord(wordWrapEnabled);
         JMenuItem wordWrapMenuItem = this.menuBuilder.wordWrapMenuItem;
         wordWrapMenuItem.setSelected(wordWrapEnabled);
+    }
+
+    public boolean confirmSave() {
+        if (!isModified) {
+            return true;
+        }
+        int option = JOptionPane.showConfirmDialog(this, "Do you want to save changes?", "Save", JOptionPane.YES_NO_CANCEL_OPTION);
+        if (option == JOptionPane.YES_OPTION) {
+            fileFunction.saveFile(false);
+            return true;
+        } else if (option == JOptionPane.NO_OPTION) {
+            return true;
+        }
+        return false;
     }
 
     @Override
